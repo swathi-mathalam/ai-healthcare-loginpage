@@ -148,31 +148,27 @@ const Login = () => {
 
         {/* RIGHT SECTION */}
         <div className="right-section">
-          <div className="logo-section">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/2382/2382461.png"
-              alt="medical-heart"
-              className="logo"
-            />
-            <h3>
-              MediConnect
-            </h3>
+          <div className="header-section">
+            <div className="logo-section">
+              <img
+                src="https://png.pngtree.com/png-clipart/20250618/original/pngtree-green-3d-health-medical-heart-icon-png-image_21204349.png"
+                alt="medical-logo"
+                className="logo"
+              />
 
-            <span>
-              Healthcare Ecosystem
-            </span>
+              <h3>MediConnect</h3>
+
+              <span>Healthcare Ecosystem</span>
+            </div>
+
+            <h2 className="welcome-title">
+              Welcome back
+            </h2>
+
+            <p className="subtitle">
+              Continue securely using your phone number or Unique ID.
+            </p>
           </div>
-
-          <h1 className="welcome-title">
-            Welcome back
-          </h1>
-
-          <p className="subtitle">
-            Continue securely
-            using your phone
-            number or Unique ID.
-          </p>
-
           {/* Toggle Buttons */}
           <div className="toggle-buttons">
             <button
