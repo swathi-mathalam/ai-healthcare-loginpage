@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./Login.scss";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
 
 import {
   sendOtp,
@@ -151,14 +153,16 @@ const Login = () => {
           <div className="header-section">
             <div className="logo-section">
               <img
-                src="https://png.pngtree.com/png-clipart/20250618/original/pngtree-green-3d-health-medical-heart-icon-png-image_21204349.png"
+                 src="https://thumbs.dreamstime.com/b/green-heart-symbol-medical-ekg-graph-90880389.jpg"
                 alt="medical-logo"
                 className="logo"
               />
 
-              <h3>MediConnect</h3>
-
-              <span>Healthcare Ecosystem</span>
+              <h6>
+                Medi Connect
+                <br />
+                Healthcare Ecosystem
+              </h6>
             </div>
 
             <h2 className="welcome-title">
@@ -328,13 +332,17 @@ const Login = () => {
             </p>
           </div>
 
-          <p className="signup-text">
-            Don’t have an
-            account?
-            <span>
-              Sign up
-            </span>
-          </p>
+          <div className="signup-container">
+            <span>Don't have an account?</span>
+
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => navigate("/signup")}
+            >
+              Sign Up
+            </Button>
+          </div>
         </div>
       </div>
     </div>
