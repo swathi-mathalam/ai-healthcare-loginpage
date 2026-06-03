@@ -3,27 +3,27 @@ import "./Header.scss";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
-
   return (
     <header className="header">
       <div className="header-left">
-        <h2>MediConnect</h2>
-        <span>Healthcare Dashboard</span>
+        <h2>Dashboard</h2>
+        <p>Welcome to MediConnect Healthcare System</p>
       </div>
 
       <div className="header-right">
-        <button
-          className="logout-btn"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
+        <input
+          type="text"
+          placeholder="Search..."
+          className="search-box"
+        />
+
+        <div className="profile">
+          <img
+            src="https://i.pravatar.cc/40"
+            alt="profile"
+          />
+          <span>Admin</span>
+        </div>
       </div>
     </header>
   );

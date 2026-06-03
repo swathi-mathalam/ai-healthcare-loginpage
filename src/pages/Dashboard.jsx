@@ -1,77 +1,110 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.scss";
+import {
+  Users,
+  CalendarDays,
+  Stethoscope,
+  Activity,
+} from "lucide-react";
 
 const Dashboard = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="dashboard-container">
-      <h2 className="dashboard-title">
-        Welcome to MediConnect Dashboard
-      </h2>
+    <div className="dashboard">
+
+      {/* Header */}
+      <div className="dashboard-header">
+        <div>
+          <h1>Dashboard</h1>
+          <p>Welcome back to MediConnect Healthcare System</p>
+        </div>
+
+        <button
+          className="register-btn"
+          onClick={() => navigate("/patients")}
+        >
+          Register Patient
+        </button>
+      </div>
 
       {/* Stats Cards */}
-      <div className="cards-container">
-        <div className="card">
-          <h3>1,250</h3>
+      <div className="dashboard-cards">
+
+        <div className="dashboard-card patients">
+          <Users size={35} />
+
+          <h2>1,250</h2>
           <p>Total Patients</p>
         </div>
 
-        <div className="card">
-          <h3>85</h3>
-          <p>Total Doctors</p>
-        </div>
+        <div className="dashboard-card appointments">
+          <CalendarDays size={35} />
 
-        <div className="card">
-          <h3>320</h3>
+          <h2>340</h2>
           <p>Appointments</p>
         </div>
 
-        <div className="card">
-          <h3>150</h3>
-          <p>Lab Reports</p>
+        <div className="dashboard-card doctors">
+          <Stethoscope size={35} />
+
+          <h2>85</h2>
+          <p>Doctors</p>
         </div>
+
+        <div className="dashboard-card reports">
+          <Activity size={35} />
+
+          <h2>68</h2>
+          <p>Reports</p>
+        </div>
+
       </div>
 
-      {/* Quick Actions */}
-      <div className="actions-section">
-        <h3>Quick Actions</h3>
+      {/* Recent Data */}
+      <div className="dashboard-grid">
 
-        <div className="button-group">
-          <button
-            onClick={() =>
-              navigate("/patient-registration")
-            }
-          >
-            + Patient Registration
-          </button>
+        <div className="recent-card">
+          <h3>Recent Patients</h3>
 
-          <button
-            onClick={() =>
-              navigate("/doctor-registration")
-            }
-          >
-            + Doctor Registration
-          </button>
+          <div className="list-item">
+            <span>John Doe</span>
+            <small>10 mins ago</small>
+          </div>
 
-          <button
-            onClick={() =>
-              navigate("/appointments")
-            }
-          >
-            Book Appointment
-          </button>
+          <div className="list-item">
+            <span>Sarah Smith</span>
+            <small>20 mins ago</small>
+          </div>
 
-          <button
-            onClick={() =>
-              navigate("/laboratory")
-            }
-          >
-            Add Lab Report
-          </button>
+          <div className="list-item">
+            <span>David Johnson</span>
+            <small>1 hour ago</small>
+          </div>
         </div>
+
+        <div className="recent-card">
+          <h3>Recent Logins</h3>
+
+          <div className="list-item">
+            <span>Admin</span>
+            <small>09:30 AM</small>
+          </div>
+
+          <div className="list-item">
+            <span>Doctor</span>
+            <small>10:15 AM</small>
+          </div>
+
+          <div className="list-item">
+            <span>Receptionist</span>
+            <small>11:00 AM</small>
+          </div>
+        </div>
+
       </div>
+
     </div>
   );
 };

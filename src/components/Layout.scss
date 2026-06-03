@@ -1,0 +1,16 @@
+.layout {
+  min-height: 100vh;
+  background: #f4f6f9;
+}
+
+.layout-body {
+  display: flex;
+}
+
+.layout-content {
+  flex: 1;
+  padding: 24px;
+  margin-left: 250px;
+  min-height: calc(100vh - 80px);
+  overflow-y: auto;
+}

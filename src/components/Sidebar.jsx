@@ -1,63 +1,79 @@
 import React from "react";
 import "./Sidebar.scss";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  LayoutDashboard,
+  Users,
+  Calendar,
+  CreditCard,
+  FileText,
+  LogOut,
+  HeartPulse,
+} from "lucide-react";
+
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    navigate("/");
+  };
+
   return (
-    <div className="sidebar">
-      <h3 className="sidebar-title">
-        Menu
-      </h3>
+    <aside className="sidebar">
+      {/* Logo */}
+      <div>
+        <div className="sidebar-logo">
+          <div className="logo-box">
+            <HeartPulse size={28} />
+          </div>
 
-      <NavLink
-        to="/dashboard"
-        className="menu-item"
-      >
-        Dashboard
-      </NavLink>
+          <div>
+            <h2>MediConnect</h2>
+            <p>Healthcare Ecosystem</p>
+          </div>
+        </div>
 
-      <NavLink
-        to="/patient-registration"
-        className="menu-item"
-      >
-        Patient Registration
-      </NavLink>
+        {/* Menu */}
+        <nav className="sidebar-menu">
 
-      <NavLink
-        to="/doctors"
-        className="menu-item"
-      >
-        Doctors
-      </NavLink>
+          <NavLink to="/dashboard">
+            <LayoutDashboard size={18} />
+            Dashboard
+          </NavLink>
 
-      <NavLink
-        to="/appointments"
-        className="menu-item"
-      >
-        Appointments
-      </NavLink>
+          <NavLink to="/patients">
+            <Users size={18} />
+            Patients
+          </NavLink>
 
-      <NavLink
-        to="/laboratory"
-        className="menu-item"
-      >
-        Laboratory
-      </NavLink>
+          <NavLink to="/appointments">
+            <Calendar size={18} />
+            Appointments
+          </NavLink>
 
-      <NavLink
-        to="/pharmacy"
-        className="menu-item"
-      >
-        Pharmacy
-      </NavLink>
+          <NavLink to="/consultation">
+            <CreditCard size={18} />
+            Consultation
+          </NavLink>
 
-      <NavLink
-        to="/settings"
-        className="menu-item"
+          <NavLink to="/reports">
+            <FileText size={18} />
+            Records
+          </NavLink>
+
+        </nav>
+      </div>
+
+      {/* Logout */}
+      <button
+        className="logout-btn"
+        onClick={handleLogout}
       >
-        Settings
-      </NavLink>
-    </div>
+        <LogOut size={18} />
+        Logout
+      </button>
+    </aside>
   );
 };
 

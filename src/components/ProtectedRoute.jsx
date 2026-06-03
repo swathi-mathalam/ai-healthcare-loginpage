@@ -1,9 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import Signup from "../pages/Signup";
+
 
 const ProtectedRoute = ({
-  children,
+  children, 
 }) => {
   const isAuthenticated =
     useSelector(
