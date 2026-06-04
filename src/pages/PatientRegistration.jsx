@@ -5,32 +5,59 @@ import "./PatientRegistration.scss";
 
 const patientSchema = Yup.object({
   fullName: Yup.string().required("Full Name is required"),
-  email: Yup.string()
-    .email("Invalid Email")
-    .required("Email is required"),
+
+  dob: Yup.date().required("Date of Birth is required"),
+
+  age: Yup.number()
+    .positive("Age must be positive")
+    .required("Age is required"),
+
+  gender: Yup.string().required("Gender is required"),
+
   mobile: Yup.string()
     .matches(/^[0-9]{10}$/, "Mobile number must be 10 digits")
     .required("Mobile Number is required"),
-  age: Yup.number().required("Age is required"),
-  gender: Yup.string().required("Gender is required"),
-  address: Yup.string().required("Address is required"),
-});
 
+  email: Yup.string()
+    .email("Invalid Email")
+    .required("Email is required"),
+
+  address: Yup.string().required("Address is required"),
+
+  aadhaar: Yup.string()
+    .matches(/^[0-9]{12}$/, "Aadhaar must be 12 digits")
+    .required("Aadhaar Number is required"),
+
+  emergencyNumber: Yup.string()
+    .matches(/^[0-9]{10}$/, "Emergency number must be 10 digits")
+    .required("Emergency Number is required"),
+
+  bloodGroup: Yup.string().required("Blood Group is required"),
+
+  insuranceProvider: Yup.string().required(
+    "Insurance Provider is required"
+  ),
+});
 const PatientRegistration = () => {
   return (
     <div className="patient-registration">
       <div className="patient-form-card">
-        <h2>Patient Registration</h2>
-        <p>Register a new patient</p>
+        <h2 className="form-title">Patient Registration</h2>
+  <p className="form-subtitle">Register a new patient</p>
 
         <Formik
           initialValues={{
             fullName: "",
-            email: "",
-            mobile: "",
+            dob: "",
             age: "",
             gender: "",
+            mobile: "",
+            email: "",
             address: "",
+            aadhaar: "",
+            emergencyNumber: "",
+            bloodGroup: "",
+            insuranceProvider: "",
           }}
           validationSchema={patientSchema}
           onSubmit={(values) => {
@@ -40,7 +67,9 @@ const PatientRegistration = () => {
         >
           <Form className="patient-form">
             <div className="form-group">
-              <label>Full Name</label>
+              <label>Full Name
+                <span className="required">*</span>
+              </label>
               <Field
                 type="text"
                 name="fullName"
@@ -54,7 +83,9 @@ const PatientRegistration = () => {
             </div>
 
             <div className="form-group">
-              <label>Email</label>
+              <label>Email
+                <span className="required">*</span>
+              </label>
               <Field
                 type="email"
                 name="email"
@@ -66,9 +97,17 @@ const PatientRegistration = () => {
                 className="error"
               />
             </div>
+            <div className="form-group">
+              <label>Date of Birth</label>
+              <Field type="date" name="dob" />
+              <ErrorMessage name="dob" component="span" className="error" />
+            </div>
+
 
             <div className="form-group">
-              <label>Mobile Number</label>
+              <label>Mobile Number
+                <span className="required">*</span>
+              </label>
               <Field
                 type="text"
                 name="mobile"
@@ -76,6 +115,32 @@ const PatientRegistration = () => {
               />
               <ErrorMessage
                 name="mobile"
+                component="span"
+                className="error"
+              />
+            </div>
+            <div className="form-group">
+              <label>Aadhaar Number</label>
+              <Field
+                type="text"
+                name="aadhaar"
+                placeholder="Enter Aadhaar Number"
+              />
+              <ErrorMessage
+                name="aadhaar"
+                component="span"
+                className="error"
+              />
+            </div>
+            <div className="form-group">
+              <label>Emergency Contact Number</label>
+              <Field
+                type="text"
+                name="emergencyNumber"
+                placeholder="Enter Emergency Contact Number"
+              />
+              <ErrorMessage
+                name="emergencyNumber"
                 component="span"
                 className="error"
               />
@@ -96,7 +161,9 @@ const PatientRegistration = () => {
             </div>
 
             <div className="form-group">
-              <label>Gender</label>
+              <label>Gender
+                <span className="required">*</span>
+              </label>
 
               <Field as="select" name="gender">
                 <option value="">Select Gender</option>
@@ -107,6 +174,40 @@ const PatientRegistration = () => {
 
               <ErrorMessage
                 name="gender"
+                component="span"
+                className="error"
+              />
+            </div>
+            <div className="form-group">
+              <label>Blood Group
+                <span className="required">*</span>
+              </label>
+              <Field as="select" name="bloodGroup">
+                <option value="">Select Blood Group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </Field>
+              <ErrorMessage
+                name="bloodGroup"
+                component="span"
+                className="error"
+              />
+            </div>
+            <div className="form-group">
+              <label>Insurance Provider</label>
+              <Field
+                type="text"
+                name="insuranceProvider"
+                placeholder="Enter Insurance Provider"
+              />
+              <ErrorMessage
+                name="insuranceProvider"
                 component="span"
                 className="error"
               />

@@ -9,6 +9,20 @@
   padding: 30px;
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  .form-title {
+  text-align: center;
+  color: #1976d2; // Professional healthcare blue
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.form-subtitle {
+  text-align: center;
+  color: #6b7280; // Soft gray
+  font-size: 15px;
+  margin-bottom: 30px;
+}
 
   h2 {
     color: #0f172a;
@@ -36,6 +50,11 @@
     font-weight: 600;
     color: #334155;
   }
+  .required-label::after {
+  content: " *";
+  color: red;
+  font-weight: bold;
+}
 
   input,
   select,

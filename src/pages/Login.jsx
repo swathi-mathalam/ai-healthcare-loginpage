@@ -3,6 +3,8 @@ import "./Login.scss";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import { Link } from "react-router-dom";
 
 import {
@@ -17,32 +19,57 @@ const Login = () => {
   const [loginType, setLoginType] =
     useState("phone");
 
-  const [phone, setPhone] =
-    useState("");
-
-  const [otp, setOtp] =
-    useState("");
-
   const [showOtp, setShowOtp] =
     useState(false);
 
-  const [uniqueId, setUniqueId] =
+  const [phoneNumber, setPhoneNumber] =
     useState("");
 
-  const [password, setPassword] =
-    useState("");
+  /* ================= VALIDATION ================= */
+
+  const phoneSchema = Yup.object({
+    phone: Yup.string()
+      .required("Phone Number is required")
+      .matches(
+        /^[0-9]{10}$/,
+        "Enter valid 10 digit phone number"
+      ),
+  });
+
+  const otpSchema = Yup.object({
+    otp: Yup.string()
+      .required("OTP is required")
+      .matches(
+        /^[0-9]{4}$/,
+        "OTP must be 4 digits"
+      ),
+  });
+
+  const uniqueSchema = Yup.object({
+    uniqueId: Yup.string().required(
+      "Unique ID is required"
+    ),
+
+    password: Yup.string()
+      .required("Password is required")
+      .min(
+        4,
+        "Minimum 4 characters"
+      ),
+  });
 
   /* ================= OTP ================= */
 
-  const handleGetOtp = () => {
-    if (!phone) {
-      alert(
-        "Please enter phone number"
-      );
-      return;
-    }
+  const handleGetOtp = (
+    values
+  ) => {
+    dispatch(
+      sendOtp(values.phone)
+    );
 
-    dispatch(sendOtp(phone));
+    setPhoneNumber(
+      values.phone
+    );
 
     setShowOtp(true);
 
@@ -51,18 +78,19 @@ const Login = () => {
     );
   };
 
-  const handleVerifyOtp = () => {
-    if (!otp) {
-      alert("Please enter OTP");
-      return;
-    }
-
-    if (otp === "1234") {
+  const handleVerifyOtp = (
+    values
+  ) => {
+    if (
+      values.otp === "1234"
+    ) {
       alert(
         "Login Successful"
       );
 
-      navigate("/dashboard");
+      navigate(
+        "/dashboard"
+      );
     } else {
       alert("Invalid OTP");
     }
@@ -70,30 +98,29 @@ const Login = () => {
 
   /* ================= UNIQUE LOGIN ================= */
 
-  const handleLogin = () => {
-    if (!uniqueId || !password) {
-      alert(
-        "Please enter Unique ID & Password"
-      );
-      return;
-    }
-
+  const handleLogin = (
+    values
+  ) => {
     dispatch(
       loginWithId(
-        uniqueId,
-        password
+        values.uniqueId,
+        values.password
       )
     );
 
     if (
-      uniqueId === "admin" &&
-      password === "1234"
+      values.uniqueId ===
+        "admin" &&
+      values.password ===
+        "1234"
     ) {
       alert(
         "Login Successful"
       );
 
-      navigate("/dashboard");
+      navigate(
+        "/dashboard"
+      );
     } else {
       alert(
         "Invalid Credentials"
@@ -101,59 +128,244 @@ const Login = () => {
     }
   };
 
+  let formContent = null;
+
+  /* ================= PHONE LOGIN ================= */
+
+  if (
+    loginType === "phone"
+  ) {
+    let otpContent =
+      null;
+
+    if (!showOtp) {
+      otpContent = (
+        <button
+          type="submit"
+          className="continue-btn"
+        >
+          Get OTP
+        </button>
+      );
+    }
+
+    if (showOtp) {
+      otpContent = (
+        <>
+          <label>
+            Enter OTP
+          </label>
+
+          <Field
+            type="text"
+            name="otp"
+            placeholder="Enter OTP"
+          />
+
+          <ErrorMessage
+            name="otp"
+            component="div"
+            className="error"
+          />
+
+          <button
+            type="submit"
+            className="continue-btn"
+          >
+            Verify OTP
+          </button>
+        </>
+      );
+    }
+
+    formContent = (
+      <Formik
+        initialValues={{
+          phone: "",
+          otp: "",
+        }}
+        validationSchema={
+          showOtp
+            ? otpSchema
+            : phoneSchema
+        }
+        onSubmit={(
+          values
+        ) => {
+          if (
+            !showOtp
+          ) {
+            handleGetOtp(
+              values
+            );
+          } else {
+            handleVerifyOtp(
+              values
+            );
+          }
+        }}
+      >
+        <Form className="form-section">
+          <label>
+            Phone Number
+          </label>
+
+          <Field
+            type="text"
+            name="phone"
+            placeholder="Enter Phone Number"
+          />
+
+          <ErrorMessage
+            name="phone"
+            component="div"
+            className="error"
+          />
+
+          {otpContent}
+        </Form>
+      </Formik>
+    );
+  }
+
+  /* ================= UNIQUE LOGIN ================= */
+
+  if (
+    loginType === "unique"
+  ) {
+    formContent = (
+      <Formik
+        initialValues={{
+          uniqueId: "",
+          password: "",
+        }}
+        validationSchema={
+          uniqueSchema
+        }
+        onSubmit={
+          handleLogin
+        }
+      >
+        <Form className="form-section">
+          <label>
+            Unique ID
+          </label>
+
+          <Field
+            type="text"
+            name="uniqueId"
+            placeholder="Enter Unique ID"
+          />
+
+          <ErrorMessage
+            name="uniqueId"
+            component="div"
+            className="error"
+          />
+
+          <label>
+            Password
+          </label>
+
+          <Field
+            type="password"
+            name="password"
+            placeholder="Enter Password"
+          />
+
+          <ErrorMessage
+            name="password"
+            component="div"
+            className="error"
+          />
+
+          <button
+            type="submit"
+            className="continue-btn"
+          >
+            Login
+          </button>
+        </Form>
+      </Formik>
+    );
+  }
+
   return (
     <div className="login-page">
       <div className="login-card">
-
         {/* LEFT SECTION */}
+
         <div className="left-section">
           <div className="left-content">
             <span className="badge">
-              AI Powered Telemedicine Platform
+              AI Powered
+              Telemedicine
+              Platform
             </span>
 
             <h1>
-              One Secure Access For
+              One Secure
+              Access For
               <br />
-              Every Healthcare User
+              Every
+              Healthcare User
             </h1>
 
             <p>
-              Patients, doctors, pharmacies,
-              laboratories, and insurance
-              providers connected through one
-              intelligent healthcare ecosystem.
+              Patients,
+              doctors,
+              pharmacies,
+              laboratories,
+              and insurance
+              providers
+              connected
+              through one
+              intelligent
+              healthcare
+              ecosystem.
             </p>
           </div>
 
           <div className="feature-cards">
             <div className="feature-card">
-              <h3>24/7</h3>
+              <h3>
+                24/7
+              </h3>
+
               <span>
-                Healthcare Access
+                Healthcare
+                Access
               </span>
             </div>
 
             <div className="feature-card">
-              <h3>100%</h3>
+              <h3>
+                100%
+              </h3>
+
               <span>
-                Encrypted Login
+                Encrypted
+                Login
               </span>
             </div>
 
             <div className="feature-card">
               <h3>AI</h3>
-              <span>AI Access</span>
+
+              <span>
+                AI Access
+              </span>
             </div>
           </div>
         </div>
 
         {/* RIGHT SECTION */}
+
         <div className="right-section">
           <div className="header-section">
             <div className="logo-section">
               <img
-                 src="https://thumbs.dreamstime.com/b/green-heart-symbol-medical-ekg-graph-90880389.jpg"
+                src="https://thumbs.dreamstime.com/b/green-heart-symbol-medical-ekg-graph-90880389.jpg"
                 alt="medical-logo"
                 className="logo"
               />
@@ -161,7 +373,8 @@ const Login = () => {
               <h6>
                 Medi Connect
                 <br />
-                Healthcare Ecosystem
+                Healthcare
+                Ecosystem
               </h6>
             </div>
 
@@ -170,15 +383,19 @@ const Login = () => {
             </h2>
 
             <p className="subtitle">
-              Continue securely using your phone number or Unique ID.
+              Continue
+              securely using
+              your phone
+              number or
+              Unique ID.
             </p>
           </div>
-          {/* Toggle Buttons */}
+
           <div className="toggle-buttons">
             <button
               className={
                 loginType ===
-                  "phone"
+                "phone"
                   ? "active"
                   : ""
               }
@@ -194,7 +411,7 @@ const Login = () => {
             <button
               className={
                 loginType ===
-                  "unique"
+                "unique"
                   ? "active"
                   : ""
               }
@@ -208,112 +425,7 @@ const Login = () => {
             </button>
           </div>
 
-          {/* PHONE LOGIN */}
-          {loginType ===
-            "phone" && (
-              <div className="form-section">
-                <label>
-                  Phone Number
-                </label>
-
-                <input
-                  type="text"
-                  placeholder="Enter Phone Number"
-                  value={phone}
-                  onChange={(e) =>
-                    setPhone(
-                      e.target.value
-                    )
-                  }
-                />
-
-                {!showOtp ? (
-                  <button
-                    className="continue-btn"
-                    onClick={
-                      handleGetOtp
-                    }
-                  >
-                    Get OTP
-                  </button>
-                ) : (
-                  <>
-                    <label>
-                      Enter OTP
-                    </label>
-
-                    <input
-                      type="text"
-                      placeholder="Enter OTP"
-                      value={otp}
-                      onChange={(e) =>
-                        setOtp(
-                          e.target.value
-                        )
-                      }
-                    />
-
-                    <button
-                      className="continue-btn"
-                      onClick={
-                        handleVerifyOtp
-                      }
-                    >
-                      Verify OTP
-                    </button>
-                  </>
-                )}
-              </div>
-            )}
-
-          {/* UNIQUE LOGIN */}
-          {loginType ===
-            "unique" && (
-              <div className="form-section">
-                <label>
-                  Unique ID
-                </label>
-
-                <input
-                  type="text"
-                  placeholder="Enter Unique ID"
-                  value={
-                    uniqueId
-                  }
-                  onChange={(e) =>
-                    setUniqueId(
-                      e.target.value
-                    )
-                  }
-                />
-
-                <label>
-                  Password
-                </label>
-
-                <input
-                  type="password"
-                  placeholder="Enter Password"
-                  value={
-                    password
-                  }
-                  onChange={(e) =>
-                    setPassword(
-                      e.target.value
-                    )
-                  }
-                />
-
-                <button
-                  className="continue-btn"
-                  onClick={
-                    handleLogin
-                  }
-                >
-                  Login
-                </button>
-              </div>
-            )}
+          {formContent}
 
           <div className="security-box">
             <h4>
@@ -322,7 +434,8 @@ const Login = () => {
             </h4>
 
             <p>
-              Your healthcare
+              Your
+              healthcare
               information is
               protected with
               enterprise-grade
@@ -333,12 +446,19 @@ const Login = () => {
           </div>
 
           <div className="signup-container">
-            <span>Don't have an account?</span>
+            <span>
+              Don't have an
+              account?
+            </span>
 
             <Button
               variant="contained"
               color="success"
-              onClick={() => navigate("/signup")}
+              onClick={() =>
+                navigate(
+                  "/signup"
+                )
+              }
             >
               Sign Up
             </Button>
@@ -350,9 +470,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
-
-
-
-
