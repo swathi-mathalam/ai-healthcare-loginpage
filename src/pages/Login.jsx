@@ -110,9 +110,9 @@ const Login = () => {
 
     if (
       values.uniqueId ===
-        "admin" &&
+      "admin" &&
       values.password ===
-        "1234"
+      "1234"
     ) {
       alert(
         "Login Successful"
@@ -395,7 +395,7 @@ const Login = () => {
             <button
               className={
                 loginType ===
-                "phone"
+                  "phone"
                   ? "active"
                   : ""
               }
@@ -411,7 +411,7 @@ const Login = () => {
             <button
               className={
                 loginType ===
-                "unique"
+                  "unique"
                   ? "active"
                   : ""
               }
@@ -450,18 +450,7 @@ const Login = () => {
               Don't have an
               account?
             </span>
-
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() =>
-                navigate(
-                  "/signup"
-                )
-              }
-            >
-              Sign Up
-            </Button>
+            <Link to="/signup"> Sign In</Link>
           </div>
         </div>
       </div>

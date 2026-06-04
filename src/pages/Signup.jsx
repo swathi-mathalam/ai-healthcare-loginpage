@@ -243,7 +243,7 @@ const Signup = () => {
 
                         <div className="signin-link">
                             Already have an account?
-                            <Link to="/login"> Sign In</Link>
+                            <Link to="/"> Sign In</Link>
                         </div>
                     </Form>
                 </Formik>
